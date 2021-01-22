@@ -1,16 +1,20 @@
 // create variables to match my classes from the html
 const question = document.querySelector('#question');
 const choices = Array.from(document.querySelectorAll('.choice-text'));
-const progressText = document.querySelector('progressText');
+const progressText = document.querySelector('#progressText');
 const scoreText = document.querySelector('#score');
 const progressBarFull = document.querySelector('#progressBarFull');
 
 // these are vars that I can use below in my function to store answers and score
 
 let currentQuestion = {}
+// set to boolean for if statement later
 let acceptingAnswers = true
+//score start at zero
 let score = 0
+// counter for random func 
 let questionCounter = 0
+// blank index
 let availableQuestions = []
 
 let questions = [
@@ -74,14 +78,7 @@ let questions = [
         choice3: "Mos Def",
         choice4: "Mos Eisley",
         answer:  4,
-        }, 
-   {    question: "What planet was used to clone troopers?", 
-        choice1: "Kamino",
-        choice2: "Kashyyk",
-        choice3: "Mustafar",
-        choice4: "Yavin",
-        answer:  1,
-        },           
+        },         
    {    question: "What planet do Wookies come from?", 
         choice1: "Kamino",
         choice2: "Kashyyk",
@@ -101,7 +98,7 @@ let questions = [
 const SCORE_POINTS = 100
 const MAX_QUESTIONS = 10
 
-// function to run quiz
+// function to run quiz 
 
 startGame = () => {
     questionCounter = 0
@@ -114,18 +111,19 @@ getNewQuestion = () => {
     if(availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS) {
         localStorage.setItem('mostRecentScore', score)
         
-        return window.location.assign('/gameover.html')
+        return window.location.assign('gameover.html')
     }
 
-    // this is incrementing my questions with a bar for representation
+    // this is incrementing my questions with the process bar 
     questionCounter++
     progressText.innerText = `Question ${questionCounter} of ${MAX_QUESTIONS}`
+    // calculates current question number with percentage
     progressBarFull.style.width = `${(questionCounter/MAX_QUESTIONS) * 100}%`
 
     // this is how I will get my questions to cycle at random
 
     const questionsIndex = Math.floor(Math.random() * availableQuestions.length)
-    currentQuestions = availableQuestions[questionsIndex]
+    currentQuestion = availableQuestions[questionsIndex]
     question.innerText = currentQuestion.question
 
     choices.forEach(choice => {
@@ -144,7 +142,7 @@ choices.forEach(choice => {
 
         acceptingAnswers = false
         const selectedChoice = e.target
-        const selectorAnswer = selectedChoice.dataset['number']
+        const selectedAnswer = selectedChoice.dataset['number']
         // indicate correct or incorrcet by changing el color
         let classToApply = selectedAnswer == currentQuestion.answer ? 'correct' : 'incorrect'
         // apply the score if correct answer chosen
@@ -152,7 +150,7 @@ choices.forEach(choice => {
             incrementScore(SCORE_POINTS)
         }
 
-        selectedChoice.paramElement.classList.remove(classToApply)
+        selectedChoice.parentElement.classList.add(classToApply)
 
         setTimeout(() => {
             selectedChoice.parentElement.classList.remove(classToApply)
