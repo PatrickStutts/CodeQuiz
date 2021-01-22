@@ -6,7 +6,17 @@ const scoreText = document.querySelector('#score');
 const progressBarFull = document.querySelector('#progressBarFull');
 
 // these are vars that I can use below in my function to store answers and score
+const timeSpan = document.querySelector("#timeSpan")
 
+let totalSeconds = 200;
+let timeRemaining = totalSeconds;
+let secondsElapsed = 0;
+let discountSeconds = 0;
+let time = setInterval(timer, 1000);
+let justRegistered = false;
+clearInterval(time); 
+
+//current question
 let currentQuestion = {}
 // set to boolean for if statement later
 let acceptingAnswers = true
@@ -16,7 +26,7 @@ let score = 0
 let questionCounter = 0
 // blank index
 let availableQuestions = []
-
+// all my questions
 let questions = [
     {
         question: "Who was Luke's father?",
@@ -171,11 +181,22 @@ const MAX_QUESTIONS = 20
 // function to run quiz 
 
 startGame = () => {
+    time = setInterval(timer, 1000);
     questionCounter = 0
     score = 0
     availableQuestions = [...questions]
     getNewQuestion()
 }
+
+function timer() {
+    timeRemining = totalSeconds - secondsElapsed - 1 - discountSeconds;
+    timeSpan.textContent = timeRemining;
+    secondsElapsed++;
+    if (timeRemining <= 0) {
+      clearInterval(time);
+      gameOver("time_out");
+    }
+  }
 
 getNewQuestion = () => {
     if(availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS) {
@@ -232,6 +253,7 @@ choices.forEach(choice => {
 
     })
 })
+
 
 incrementScore = num => {
     score +=num
