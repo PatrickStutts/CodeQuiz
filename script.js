@@ -143,7 +143,7 @@ choices.forEach(choice => {
         acceptingAnswers = false
         const selectedChoice = e.target
         const selectedAnswer = selectedChoice.dataset['number']
-        // indicate correct or incorrcet by changing el color
+        // indicate correct or incorrcet by changing element color
         let classToApply = selectedAnswer == currentQuestion.answer ? 'correct' : 'incorrect'
         // apply the score if correct answer chosen
         if(classToApply === 'correct') {
@@ -164,7 +164,7 @@ choices.forEach(choice => {
 })
 
 incrementScore = num => {
-    score =+num
+    score +=num
     scoreText.innerText = score
 }
 
